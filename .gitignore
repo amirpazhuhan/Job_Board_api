@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+db.sqlite3
+media/
+.env
+.DS_store/
+.DS_store
+docker-compose-prod.yml
