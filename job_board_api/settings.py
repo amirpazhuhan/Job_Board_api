@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # My apps
     "user",
     "companies",
+    "jobs",
     ###
     "django.contrib.admin",
     "django.contrib.auth",
