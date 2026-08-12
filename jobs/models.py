@@ -1,5 +1,6 @@
 from django.db import models
 from companies.models import Company
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 
@@ -19,3 +20,17 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class SavedJob(models.Model):
+
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="saved_jobs"
+    )
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="saved_by")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "job"], name="unique_SavedJobs")
+        ]

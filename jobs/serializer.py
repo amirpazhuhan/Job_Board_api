@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Job
+from .models import Job, SavedJob
 
 
 class JobSerializer(serializers.ModelSerializer):
