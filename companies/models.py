@@ -7,6 +7,7 @@ User = get_user_model()
 
 
 class Company(models.Model):
+    """Company profile owned by one authenticated user."""
 
     owner = models.OneToOneField(
         User,

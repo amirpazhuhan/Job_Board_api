@@ -14,6 +14,10 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+import environ
+
+env = environ.Env()
+env.read_env()
 
 load_dotenv()
 
@@ -25,10 +29,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-v#h74zpu#r^6v1k=nm3ubo1npn##@cf593^oc^njxzfpl!)xfm"
+SECRET_KEY = os.getenv(
+    "SECRET_KEY", "django-insecure-v#h74zpu#r^6v1k=nm3ubo1npn##@cf593^oc^njxzfpl!)xfm"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = []
 
@@ -48,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -132,6 +139,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -147,6 +156,14 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Job Board API",
+    "DESCRIPTION": "Endpoints for job seekers and company owners.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 

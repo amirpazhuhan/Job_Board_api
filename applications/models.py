@@ -6,6 +6,7 @@ from jobs.models import Job
 
 
 class Application(models.Model):
+    """A candidate's application for a job listing."""
 
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
@@ -18,7 +19,7 @@ class Application(models.Model):
         get_user_model(), on_delete=models.CASCADE, related_name="applications"
     )
     cover_letter = models.TextField()
-    resume = models.FileField(upload_to="media/")
+    resume = models.FileField(upload_to="resumes/")
     status = models.CharField(
         max_length=255, choices=Status.choices, default=Status.PENDING
     )

@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Serialize the editable profile fields of an authenticated user."""
 
     class Meta:
         model = User
@@ -21,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    """Validate registration data and create a user with a hashed password."""
 
     password = serializers.CharField(
         write_only=True,
@@ -55,14 +57,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-    """
-    Validate and update the authenticated user's password.
-
-    The serializer requires the user's current password and a new password.
-    It verifies that the current password is correct, validates the new
-    password against Django's configured password validators, and updates
-    the user's password if all validation succeeds.
-    """
+    """Validate the current password and persist a valid replacement."""
 
     old_password = serializers.CharField(
         write_only=True,
@@ -82,13 +77,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     )
 
     def validate_old_password(self, value):
-        """
-        Ensure the supplied current password matches the user's
-        existing password.
-
-        This method is called automatically by DRF during
-        ``serializer.is_valid()``.
-        """
+        """Ensure the current password matches the authenticated user."""
         user = self.context["request"].user
 
         if not user.check_password(value):
@@ -97,43 +86,16 @@ class ChangePasswordSerializer(serializers.Serializer):
         return value
 
     def validate_new_password(self, value):
-        """
-        Validate the proposed new password.
-
-        Django's password validation framework checks requirements
-        such as minimum length, similarity to user information,
-        common passwords, and numeric-only passwords (depending on
-        project settings).
-        """
+        """Validate the replacement with Django's password validators."""
         validate_password(value)
         return value
 
     def save(self):
-        """
-        Replace the authenticated user's password.
-
-        This method should be called only after successful validation.
-        The serializer updates the user's password using Django's
-        ``set_password()`` method, which securely hashes the password
-        before saving it to the database.
-
-        After the password is changed, Django's password validators
-        are notified through ``password_changed()``.
-        """
-        # The instance is supplied by UpdateAPIView via get_object().
+        """Hash, save, and notify validators about the new password."""
         user = self.instance
-
-        # Retrieve the validated new password.
         password = self.validated_data["new_password"]
-
-        # Hash the password and assign it to the user.
         user.set_password(password)
-
-        # Persist the updated password hash.
         user.save()
-
-        # Notify Django's password validation framework that the
-        # password has been successfully changed.
         password_changed(password, user)
 
         return user
