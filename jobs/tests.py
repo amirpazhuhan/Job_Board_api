@@ -51,7 +51,7 @@ class JobsTest(APITestCase):
 
     def test_authenticated_user_can_create_job(self):
         response = self.client.post(
-            "/api/jobs/",
+            "/api/jobs/create/",
             {
                 "title": "Janitor",
                 "description": "Janitor cleans the environment around workplace.",
@@ -61,7 +61,7 @@ class JobsTest(APITestCase):
             format="json",
         )
         response2 = self.client.post(
-            "/api/jobs/",
+            "/api/jobs/create/",
             {
                 "title": "Janitor",
                 "description": "Janitor cleans the environment around workplace.",
@@ -73,7 +73,7 @@ class JobsTest(APITestCase):
         )
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer ")
         response3 = self.client.post(
-            "/api/jobs/",
+            "/api/jobs/create/",
             {
                 "title": "Janitor",
                 "description": "Janitor cleans the environment around workplace.",
@@ -92,7 +92,7 @@ class JobsTest(APITestCase):
     def test_company_user_can_modify_delete_jobs(self):
 
         created_job = self.client.post(
-            "/api/jobs/",
+            "/api/jobs/create/",
             {
                 "title": "Janitor",
                 "description": "Janitor cleans the environment around workplace.",

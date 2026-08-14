@@ -12,3 +12,4 @@ RUN pip install -r requirements.txt
 # Copy project
 COPY . .
 
+CMD ["gunicorn", "mini_ecommerce.wsgi:application", "--bind", "0.0.0.0:10000"]
