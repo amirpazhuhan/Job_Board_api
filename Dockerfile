@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 # Copy project
 COPY . .
 
-CMD ["gunicorn", "mini_ecommerce.wsgi:application", "--bind", "0.0.0.0:10000"]
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && python manage.py makemigrations && python manage.py migrate --noinput && gunicorn job_board_api.wsgi:application --bind 0.0.0.0:8001"]

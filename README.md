@@ -125,14 +125,3 @@ Run the test suite with:
 ```bash
 python manage.py test
 ```
-
-## Media uploads
-
-Company logos and application resumes are saved under `media/` during development. Django serves them only while `DEBUG=True`; use object storage or a web server for media in production.
-
-## Production notes
-
-- Set a strong `SECRET_KEY` through environment variables.
-- Set `DEBUG=False`.
-- Configure `ALLOWED_HOSTS` for your deployment domain.
-- Use a production email backend and media storage service.

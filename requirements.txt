@@ -1,6 +1,6 @@
 asgiref==3.12.1
 attrs==26.1.0
-Django==6.1
+Django==6.0.0
 djangorestframework==3.18.0
 djangorestframework_simplejwt==5.5.1
 drf-spectacular==0.30.0
@@ -17,4 +17,5 @@ sqlparse==0.5.5
 uritemplate==4.2.0
 pillow==12.3.0
 django-filter==26.1
-django-environ
+environs[django]>=14.0.0
+whitenoise==6.12.0
